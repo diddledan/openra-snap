@@ -63,6 +63,9 @@ parts:
     prepare: |
       sed -i 's|^Icon=\(.*\)$|Icon=${SNAP}/usr/local/share/icons/hicolor/128x128/apps/\1.png|' packaging/linux/openra.desktop.in
       sed -i 's|^Exec=|Exec=openra.{MOD}|' packaging/linux/openra.desktop.in
+      # the next two lines fix nuget for the build.snapcraft.io proxy sanbox
+      [ -n "$HTTP_PROXY" ] && nuget config -set 'http_proxy=$HTTP_PROXY'
+      [ -n "$HTTPS_PROXY" ] && nuget config -set 'https_proxy=$HTTPS_PROXY'
       make dependencies
     install: |
       make DESTDIR=$SNAPCRAFT_PART_INSTALL install
